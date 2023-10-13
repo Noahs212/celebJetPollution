@@ -1,0 +1,34 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+*.egg
+*.cache/
+*.c
+*.so
+
+# Virtual environment
+venv/
+env/
+*.venv
+*.virtualenv
+
+# Flask-specific
+instance/
+*.sqlite
+
+# Logs
+*.log
+
+# Environment variables or secrets
+.env
+.env.*
+
+# IDE-specific (e.g., PyCharm)
+.idea/
+*.iml
+
+# OS-specific
+.DS_Store
+Thumbs.db
