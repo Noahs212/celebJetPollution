@@ -5,6 +5,7 @@ app = Flask(__name__)
 
 # Replace 'YOUR_API_KEY' with your actual AviationStack API key
 API_KEY = "947ef17ad2420b1a1d3d34058504eac3"
+AVIATION_STACK_API_URL = 'http://api.aviationstack.com/v1/flights?access_key=947ef17ad2420b1a1d3d34058504eac3'
 
 @app.route('/')
 def index():
@@ -25,6 +26,36 @@ def get_historical_flight_info():
         return jsonify(flight_data)
     else:
         return jsonify({'error': 'Failed to retrieve historical flight information'}), 500
+    
+
+@app.route('/getflightinfo', methods=['GET'])
+def get_flight_info():
+    registration_number = "N844UA"
+    
+
+    if not registration_number:
+        return jsonify({'error': 'Please provide a registration number'}), 400
+
+    params = {
+        'access_key': API_KEY,
+        'search': registration_number
+    }
+
+    try:
+        response = requests.get(AVIATION_STACK_API_URL, params=params)
+        data = response.json()
+
+        if response.status_code == 200:
+            # Check if there is airplane data in the response
+            if data.get('data'):
+                return jsonify(data['data'][0])
+            else:
+                return jsonify({'error': 'No flight information found for the given registration number'}), 404
+        else:
+            return jsonify({'error': 'Error fetching flight information'}), 500
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
